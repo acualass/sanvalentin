@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>¿Quieres ser mi San Valentín?</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #ff758c, #ff7eb3);
+      height: 100vh;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.2);
+      padding: 30px;
+      border-radius: 20px;
+      width: 350px;
+      position: relative;
+      z-index: 2;
+      transition: opacity 0.5s ease;
+    }
+
+    .botones {
+      margin-top: 20px;
+      display: flex;
+      justify-content: space-around;
+    }
+
+    button {
+      padding: 12px 22px;
+      font-size: 1.1em;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+    }
+
+    #si {
+      background: #4caf50;
+      color: white;
+    }
+
+    #no {
+      background: #f44336;
+      color: white;
+      position: fixed;
+    }
+
+    .mensaje {
+      margin-top: 15px;
+      font-size: 1.2em;
+      display: none;
+    }
+
+    /* Nuevo cuadro sólido para el mensaje romántico */
+    #cuadroMensaje {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #ff4c68; /* color sólido */
+      color: white;
+      padding: 30px;
+      border-radius: 20px;
+      width: 400px;
+      font-size: 1.3em;
+      z-index: 999;
+      text-align: center;
+      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+    }
+
+    /* 💗 Corazones en todas direcciones */
+    .corazon {
+      position: fixed;
+      font-size: 24px;
+      pointer-events: none;
+      animation: explotar 2s forwards;
+    }
+
+    @keyframes explotar {
+      0% {
+        transform: translate(0,0) scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: translate(var(--x), var(--y)) scale(1.5);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card" id="cardPrincipal">
+    <h1>💘 ¿Quieres ser mi San Valentín? 💘</h1>
+
+    <div class="botones">
+      <button id="si" onclick="aceptar()">Sí 💕</button>
+      <button id="no" onmouseover="moverNo()">No 😢</button>
+    </div>
+
+    <div class="mensaje" id="mensaje">
+      ya di que sí 🙄💘
+    </div>
+  </div>
+
+  <!-- Nuevo cuadro sólido -->
+  <div id="cuadroMensaje">
+    Eres lo más bonito que puedo tener, pasar un día especial contigo es lo que más anhelo, te amo mi vida 💖
+  </div>
+
+  <script>
+    let intentosNo = 0;
+
+    // 😈 BOTÓN NO
+    function moverNo() {
+      const boton = document.getElementById("no");
+      intentosNo++;
+
+      if (intentosNo >= 5) {
+        document.getElementById("mensaje").style.display = "block";
+      }
+
+      const maxX = window.innerWidth - boton.offsetWidth;
+      const maxY = window.innerHeight - boton.offsetHeight;
+
+      boton.style.left = Math.random() * maxX + "px";
+      boton.style.top = Math.random() * maxY + "px";
+    }
+
+    // 💥 MUCHOS CORAZONES + mostrar cuadro sólido
+    function aceptar() {
+      // ocultar card principal
+      const card = document.getElementById("cardPrincipal");
+      card.style.display = "none";
+
+      // mostrar cuadro sólido
+      const cuadro = document.getElementById("cuadroMensaje");
+      cuadro.style.display = "block";
+
+      // Lluvia de corazones
+      for (let i = 0; i < 100; i++) {
+        crearCorazon();
+      }
+    }
+
+    function crearCorazon() {
+      const corazon = document.createElement("div");
+      corazon.className = "corazon";
+
+      const emojis = ["💖","💘","💗","💕","❤️"];
+      corazon.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
+
+      // posición inicial aleatoria
+      const startX = Math.random() * window.innerWidth;
+      const startY = Math.random() * window.innerHeight;
+      corazon.style.left = startX + "px";
+      corazon.style.top = startY + "px";
+
+      // movimiento aleatorio en X e Y
+      const deltaX = (Math.random() - 0.5) * 400; // -200 a 200 px
+      const deltaY = (Math.random() - 0.5) * 400; // -200 a 200 px
+      corazon.style.setProperty('--x', deltaX + 'px');
+      corazon.style.setProperty('--y', deltaY + 'px');
+
+      document.body.appendChild(corazon);
+
+      setTimeout(() => corazon.remove(), 2000);
+    }
+  </script>
+
+</body>
+</html>
